@@ -1,6 +1,8 @@
 [tool.poetry]
 name = "arcade_local_file_management"
-version = "0.1.0"
+version = "0.1.1"
+readme = "README.md"
+license = { file = "LICENSE" }
 description = "LLM tools for tasks relating to folder and file management that are stored locally"
 authors = ["Eric Gustin <eric@arcade-ai.com>"]
 
