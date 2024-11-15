@@ -3,10 +3,6 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-  workflow_run:
-    workflows: ["Main"]
-    types:
-      - completed
 
 jobs:
   pypi-publish:
@@ -17,7 +13,6 @@ jobs:
       url: https://pypi.org/project/arcade_local_file_management
     permissions:
       id-token: write
-    if: github.event_name == 'release' && github.event.action == 'published' && github.event.workflow_run.conclusion == 'completed'
     steps:
     - name: Check out
       uses: actions/checkout@v4
