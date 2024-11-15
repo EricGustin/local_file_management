@@ -14,7 +14,7 @@ from arcade_local_file_management.tools.terminal import (
     search_file,
 )
 
-from arcade.core.catalog import ToolCatalog
+from arcade.sdk import ToolCatalog
 from arcade.sdk.eval import (
     EvalRubric,
     EvalSuite,
@@ -134,7 +134,10 @@ def text_eval_suite():
     expected_create_file_calls = [
         (
             create_file,
-            {"file_path": f"/Users/foo/bar/{i}.txt", "contents": f"This is the {i} file"},
+            {
+                "file_path": f"/Users/foo/bar/{i}.txt",
+                "contents": f"This is the {i} file",
+            },
         )
         for i in range(1, 11)
     ]
