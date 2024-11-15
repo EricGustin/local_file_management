@@ -1,3 +1,12 @@
+from arcade.sdk import ToolCatalog
+from arcade.sdk.eval import (
+    EvalRubric,
+    EvalSuite,
+    SimilarityCritic,
+    tool_eval,
+)
+from arcade.sdk.eval.critic import BinaryCritic
+
 import arcade_local_file_management
 from arcade_local_file_management.tools.terminal import (
     copy_file,
@@ -14,15 +23,6 @@ from arcade_local_file_management.tools.terminal import (
     search_file,
 )
 
-from arcade.core.catalog import ToolCatalog
-from arcade.sdk.eval import (
-    EvalRubric,
-    EvalSuite,
-    SimilarityCritic,
-    tool_eval,
-)
-from arcade.sdk.eval.critic import BinaryCritic
-
 # Evaluation rubric
 rubric = EvalRubric(
     fail_threshold=0.85,
@@ -35,7 +35,7 @@ catalog.add_module(arcade_local_file_management)
 
 
 @tool_eval()
-def text_eval_suite():
+def text_eval_suite() -> EvalSuite:  # type: ignore[no-any-unimported]
     suite = EvalSuite(
         name="Local Tools Evaluation",
         system_message="You are an AI assistant with access to tools that can manipulate the user's local machine. Use them to help the user with their tasks.",
@@ -134,7 +134,10 @@ def text_eval_suite():
     expected_create_file_calls = [
         (
             create_file,
-            {"file_path": f"/Users/foo/bar/{i}.txt", "contents": f"This is the {i} file"},
+            {
+                "file_path": f"/Users/foo/bar/{i}.txt",
+                "contents": f"This is the {i} file",
+            },
         )
         for i in range(1, 11)
     ]

@@ -1,6 +1,8 @@
 import os
+from pathlib import Path
 
 import pytest
+
 from arcade_local_file_management.tools.terminal import (
     copy_file,
     copy_folder,
@@ -19,7 +21,7 @@ from arcade_local_file_management.tools.terminal import (
 
 # Helper function to create a temporary file
 @pytest.fixture
-def temp_file(tmp_path):
+def temp_file(tmp_path: Path) -> Path:
     file = tmp_path / "temp.txt"
     file.write_text("Hello, World!")
     return file
@@ -27,29 +29,29 @@ def temp_file(tmp_path):
 
 # Helper function to create a temporary directory
 @pytest.fixture
-def temp_directory(tmp_path):
+def temp_directory(tmp_path: Path) -> Path:
     directory = tmp_path / "temp_dir"
     directory.mkdir()
     return directory
 
 
-def test_get_text_file_details(temp_file):
+def test_get_text_file_details(temp_file: Path) -> None:
     details = get_text_file_details(str(temp_file))
     assert "contents" in details
     assert details["contents"] == "Hello, World!"
 
 
-def test_search_file(temp_file):
+def test_search_file(temp_file: Path) -> None:
     matches = search_file(str(temp_file), "Hello")
     assert matches == ["Hello, World!"]
 
 
-def test_list_directory(temp_directory):
+def test_list_directory(temp_directory: Path) -> None:
     contents = list_directory(str(temp_directory))
     assert contents == []
 
 
-def test_create_file(temp_directory):
+def test_create_file(temp_directory: Path) -> None:
     file_path = str(temp_directory / "new_file.txt")
     create_file(file_path, "Sample content")
     assert os.path.exists(file_path)
@@ -57,19 +59,19 @@ def test_create_file(temp_directory):
         assert f.read() == "Sample content"
 
 
-def test_create_directory(tmp_path):
+def test_create_directory(tmp_path: Path) -> None:
     new_dir = tmp_path / "new_dir"
     create_directory(str(new_dir))
     assert os.path.exists(new_dir)
     assert os.path.isdir(new_dir)
 
 
-def test_remove_file(temp_file):
+def test_remove_file(temp_file: Path) -> None:
     remove_file(str(temp_file))
     assert not os.path.exists(temp_file)
 
 
-def test_copy_file(temp_file, temp_directory):
+def test_copy_file(temp_file: Path, temp_directory: Path) -> None:
     destination = temp_directory / "copied_file.txt"
     copy_file(str(temp_file), str(destination))
     assert os.path.exists(destination)
@@ -77,7 +79,7 @@ def test_copy_file(temp_file, temp_directory):
         assert f.read() == "Hello, World!"
 
 
-def test_move_file(temp_file, temp_directory):
+def test_move_file(temp_file: Path, temp_directory: Path) -> None:
     destination = temp_directory / "moved_file.txt"
     move_file(str(temp_file), str(destination))
     assert os.path.exists(destination)
@@ -86,7 +88,7 @@ def test_move_file(temp_file, temp_directory):
         assert f.read() == "Hello, World!"
 
 
-def test_rename_file(temp_file):
+def test_rename_file(temp_file: Path) -> None:
     new_name = temp_file.parent / "renamed_file.txt"
     rename_file(str(temp_file), "renamed_file.txt")
     assert os.path.exists(new_name)
@@ -95,7 +97,7 @@ def test_rename_file(temp_file):
         assert f.read() == "Hello, World!"
 
 
-def test_copy_folder(temp_directory, tmp_path):
+def test_copy_folder(temp_directory: Path, tmp_path: Path) -> None:
     # Create a subdirectory and a file inside the temp_directory
     sub_dir = temp_directory / "sub_dir"
     sub_dir.mkdir()
@@ -111,7 +113,7 @@ def test_copy_folder(temp_directory, tmp_path):
         assert f.read() == "Sample content"
 
 
-def test_move_folder(temp_directory, tmp_path):
+def test_move_folder(temp_directory: Path, tmp_path: Path) -> None:
     # Create a subdirectory and a file inside the temp_directory
     sub_dir = temp_directory / "sub_dir"
     sub_dir.mkdir()
@@ -128,7 +130,7 @@ def test_move_folder(temp_directory, tmp_path):
         assert f.read() == "Sample content"
 
 
-def test_rename_folder(temp_directory):
+def test_rename_folder(temp_directory: Path) -> None:
     # Create a subdirectory and a file inside the temp_directory
     sub_dir = temp_directory / "sub_dir"
     sub_dir.mkdir()
